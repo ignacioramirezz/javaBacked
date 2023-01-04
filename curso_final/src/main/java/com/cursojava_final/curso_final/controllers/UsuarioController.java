@@ -1,15 +1,25 @@
 package com.cursojava_final.curso_final.controllers;
 import com.cursojava_final.curso_final.Models.Usuario;
 import dao.UsuarioDao;
+import dao.UsuarioDaoImp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class UsuarioController implements UsuarioDao {
+public class UsuarioController{
+
+    //hace que automaticamente la clase usuariodaoimp se cree un objeto y la guarda dentro de esta variable
+
+    private final UsuarioDao usuarioDao = new UsuarioDaoImp();
 
     @RequestMapping(value = "usuario/{id}")
     public Usuario getUsuario(@PathVariable long id){
@@ -69,15 +79,9 @@ public class UsuarioController implements UsuarioDao {
     }
 
 
-    @RequestMapping(value = "borrado")
-    public Usuario eliminar(){
-        Usuario usuario = new Usuario();
-        usuario.setApellido("Ramirez");
-        usuario.setContrasena("nose");
-        usuario.setNombre("Ignacio");
-        usuario.setEmail("ignacio.uni@gmail.com");
-        usuario.setTelefono("12345678");
-        return usuario;
+    @RequestMapping(value = "api/usuarios/{id}",method = RequestMethod.DELETE)
+    public void eliminar(@PathVariable Long id){
+        usuarioDao.eliminar(id);
     }
 
     @RequestMapping(value = "busqueda")
